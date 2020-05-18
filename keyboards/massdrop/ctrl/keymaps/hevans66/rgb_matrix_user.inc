@@ -33,7 +33,7 @@ bool effect_runner_custom(uint8_t start, effect_params_t* params, custom_splash_
         HSV hsv = {
            .h = rgb_matrix_config.hsv.h,
            .s = rgb_matrix_config.hsv.s,
-           .v = 0,
+           .v = count ? 0 : rgb_matrix_config.hsv.v, // if count is 0 (there are no recent clicks, set background value
         };    
         for (uint8_t j = start; j < count; j++) {
             int16_t  dx   = g_led_config.point[i].x - g_last_hit_tracker.x[j];
@@ -43,7 +43,7 @@ bool effect_runner_custom(uint8_t start, effect_params_t* params, custom_splash_
             hsv    = effect_func(hsv, dist, tick);
         }
         RGB result_rgb = hsv_to_rgb(hsv);
-	rgb_matrix_set_color(i, result_rgb.r, result_rgb.g, result_rgb.b);
+	      rgb_matrix_set_color(i, result_rgb.r, result_rgb.g, result_rgb.b);
     }
     return led_max < DRIVER_LED_TOTAL;
 }

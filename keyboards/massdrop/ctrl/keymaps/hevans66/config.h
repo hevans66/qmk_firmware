@@ -45,9 +45,9 @@
 #define RGB_MATRIX_KEYPRESSES         // reacts to keypresses
 // #define RGB_MATRIX_KEYRELEASES        // reacts to keyreleases (instead of keypresses)
 // #define RGB_MATRIX_SOLID_COLOR // Sets the default mode, if none has been set
-#define RGBLIGHT_HUE_STEP 1        // Units to step when in/decreasing hue
-#define RGBLIGHT_SAT_STEP 1        // Units to step when in/decreasing saturation
-#define RGBLIGHT_VAL_STEP 1       // Units to step when in/decreasing value (brightness)
+#define RGBLIGHT_HUE_STEP 2        // Units to step when in/decreasing hue
+#define RGBLIGHT_SAT_STEP 2        // Units to step when in/decreasing saturation
+#define RGBLIGHT_VAL_STEP 2       // Units to step when in/decreasing value (brightness)
 #define RGB_DISABLE_AFTER_TIMEOUT 0   // number of ticks to wait until disabling effects
 #define RGB_DISABLE_WHEN_USB_SUSPENDED false // turn off effects when suspended
 // #define RGB_MATRIX_LED_PROCESS_LIMIT (DRIVER_LED_TOTAL + 4) / 5 // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)

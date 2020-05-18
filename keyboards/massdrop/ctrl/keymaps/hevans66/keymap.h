@@ -27,9 +27,9 @@
 #define PINK {HSV_PINK}
 
 //========================================================== CONFIGURABLE DEFAULTS ==========================================================
-#define RGB_DEFAULT_TIME_OUT 30
+#define RGB_DEFAULT_TIME_OUT 60000
 #define RGB_FAST_MODE_TIME_OUT 3
-#define RGB_TIME_OUT_MAX 600
+#define RGB_TIME_OUT_MAX 60000
 #define RGB_TIME_OUT_MIN 10
 #define RGB_TIME_OUT_STEP 10
 
