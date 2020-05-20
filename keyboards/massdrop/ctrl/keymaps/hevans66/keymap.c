@@ -1,6 +1,5 @@
 #include "keymap.h"
 
-static uint16_t idle_timer;             // Idle LED timeout timer
 static uint8_t idle_second_counter;     // Idle LED seconds counter, counts seconds not milliseconds
 static uint8_t key_event_counter;       // This counter is used to check if any keys are being held
 
@@ -44,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL,  KC_VOLD,  KC_MPRV,
         KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                            KC_UP,
-        KC_LCTL, KC_LGUI, KC_LALT,                   LT(_MV, KC_SPC),                    KC_RALT, MO(1),   KC_APP,  KC_RCTL,          KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, KC_LGUI, KC_LALT,                   LT(_MV, KC_SPC),                    KC_RALT, MO(1),   KC_LGUI,  KC_RCTL,          KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FL] = LAYOUT(
         _______, DM_PLY1, DM_PLY2, _______,  _______, DM_REC1, DM_REC2, _______,  _______,  DM_RSTP, _______, KC_WAKE, KC_SLEP,          KC_MUTE, TERM_ON, TERM_OFF,
@@ -149,45 +148,11 @@ void keyboard_post_init_user(void) {
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
-    if(rgb_time_out_enable && rgb_enabled_flag) {
-        // If the key event counter is not zero then some key was pressed down but not released, thus reset the timeout counter.
-        if (key_event_counter) {
-            idle_second_counter = 0;
-        } else if (timer_elapsed(idle_timer) > MILLISECONDS_IN_SECOND) {
-            idle_second_counter++;
-            idle_timer = timer_read();
-        }
 
-        if (idle_second_counter >= rgb_time_out_seconds) {
-            rgb_time_out_saved_flag = rgb_matrix_get_flags();
-            rgb_matrix_set_flags(LED_FLAG_NONE);
-            rgb_matrix_disable_noeeprom();
-            rgb_enabled_flag = false;
-            idle_second_counter = 0;
-        }
-    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
-
-    // Increment key event counter for every press and decrement for every release.
-    if (record->event.pressed) {
-        key_event_counter++;
-    } else {
-        key_event_counter--;
-    }
-
-    if (rgb_time_out_enable) {
-        idle_timer = timer_read();
-        //Reset the seconds counter. Without this, something like press> leave x seconds> press, would be x seconds on the effective counter not 0 as it should.
-        idle_second_counter = 0;
-        if (!rgb_enabled_flag) {
-            rgb_matrix_enable_noeeprom();
-            rgb_matrix_set_flags(rgb_time_out_saved_flag);
-            rgb_enabled_flag = true;
-        }
-    }
 
     switch (keycode) {
         case U_T_AUTO:
